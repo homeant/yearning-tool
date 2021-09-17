@@ -1,0 +1,14 @@
+dependencies {
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttpVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofitVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${versions.jacksonVersion}"
+    implementation "commons-logging:commons-logging:${versions.commonsLoggingVersion}"
+    implementation "org.apache.commons:commons-lang3:${versions.commonsLang3Version}"
+    implementation "org.apache.commons:commons-collections4:${versions.commonsCollections4Version}"
+    implementation "com.google.guava:guava:${versions.guavaVersion}"
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.18'
+    compileOnly 'org.projectlombok:lombok:1.18.18'
+}

@@ -1,0 +1,5 @@
+dependencies {
+    testCompileOnly 'org.projectlombok:lombok:1.18.18'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.18'
+    testImplementation 'org.testng:testng:7.3.0'
+}

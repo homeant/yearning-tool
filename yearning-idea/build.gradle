@@ -1,0 +1,49 @@
+import java.time.LocalDateTime
+
+plugins {
+    id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.changelog' version '1.1.2'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+apply from: '../test_dependencies.gradle'
+apply from: '../shared_dependencies.gradle'
+apply plugin: 'org.jetbrains.changelog'
+
+
+
+sourceCompatibility=JavaVersion.VERSION_11
+targetCompatibility=JavaVersion.VERSION_11
+
+dependencies {
+
+}
+
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version '2021.1.1'
+    type 'IU'
+    plugins 'com.intellij.database', 'java'
+}
+
+changelog {
+    version = '0.1'
+    header = { "[$version] - ${LocalDateTime.now().format("yyyy-MM-dd")}" }
+    headerParserRegex = ~/\d+\.\d+/
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    unreleasedTerm = "[Unreleased]"
+    groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
+}
+
+tasks {
+    patchPluginXml {
+        changeNotes({ changelog.getUnreleased().toHTML() })
+    }
+}
+
+
+test {
+    useJUnitPlatform()
+}

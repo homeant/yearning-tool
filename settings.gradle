@@ -1,0 +1,4 @@
+rootProject.name = 'yearning-tool'
+include 'yearning-idea'
+include 'yearning-jdbc'
+

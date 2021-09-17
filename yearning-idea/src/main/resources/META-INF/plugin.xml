@@ -1,0 +1,75 @@
+<idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude">
+    <id>com.github.homeant.yearning</id>
+    <name>Yearning</name>
+    <vendor email="homeanter@163.com" url="https://github.con/homeanter/yearning-tool">yearning-idea</vendor>
+
+    <description><![CDATA[
+        <p>A powerful tool to connect with the yearning</p>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.database</depends>
+
+    <extensions defaultExtensionNs="com.intellij.database">
+        <driversConfig config="databaseDrivers/yearning-drivers.xml"/>
+        <artifactsConfig config="databaseDrivers/database-artifacts.xml"/>
+        <dbms instance="com.github.homeant.yearning.database.dialects.mysql.MysqlHolder.DBMS"/>
+        <dialect dbms="YEARNING-MYSQL"
+                 implementationClass="com.github.homeant.yearning.database.dialects.mysql.MysqlDialect"/>
+        <jdbcHelper dbms="YEARNING-MYSQL"
+                    implementationClass="com.intellij.database.remote.jdbc.helpers.MysqlJdbcHelper"/>
+        <modelFacade dbms="YEARNING-MYSQL"
+                     implementationClass="com.intellij.database.dialects.mysql.model.MysqlModelFacade"/>
+        <domainRegistry dbms="YEARNING-MYSQL" implementationClass="com.intellij.database.dialects.mysql.MysqlDomains"/>
+        <gridHelper dbms="YEARNING-MYSQL"
+                    implementationClass="com.intellij.database.dialects.mysqlbase.MysqlBaseGridHelper"/>
+    </extensions>
+
+    <!-- yearning 扩展 -->
+    <extensions defaultExtensionNs="com.intellij">
+        <sql.dialect dbms="YEARNING-MYSQL"
+                     implementationClass="com.github.homeant.yearning.sql.dialects.mysql.MysqlSqlDialect"/>
+        <lang.quoteHandler language="Yearning-MySQL" implementationClass="com.intellij.sql.editor.SqlQuoteHandler"/>
+        <lang.commenter language="Yearning-MySQL" implementationClass="com.intellij.sql.dialects.mysql.MysqlCommenter"/>
+
+        <lang.syntaxHighlighterFactory language="Yearning-MySQL"
+                                       implementationClass="com.github.homeant.yearning.sql.dialects.mysql.MysqlSyntaxHighlighterFactory"/>
+        <lang.parserDefinition language="Yearning-MySQL"
+                               implementationClass="com.github.homeant.yearning.sql.dialects.mysql.MysqlParserDefinition"/>
+
+        <projectService serviceImplementation="com.github.homeant.yearning.config.YearningConfiguration"/>
+
+        <projectConfigurable instance="com.github.homeant.yearning.config.YearningConfigurable" displayName="Yearning"/>
+        <toolWindow factoryClass="com.github.homeant.yearning.YearningToolWindow" id="Yearning" anchor="bottom"/>
+    </extensions>
+
+
+    <actions>
+
+        <action id="Console.Jdbc.Yearning.RunContext.SubmitWorkOrder" class="com.github.homeant.yearning.action.NewWorkOrderAction" text="Submit Work Order"/>
+
+        <!-- yearning tool begin -->
+        <group id="Console.Jdbc.Yearning.RunContextGroup">
+            <reference id="Console.Jdbc.Yearning.RunContext.SubmitWorkOrder"/>
+            <add-to-group group-id="Console.Jdbc.RunContextGroup" anchor="last"/>
+        </group>
+
+        <group id="Console.TableResult.Yearning.Group">
+            <action class="com.github.homeant.yearning.action.PageAction$First" text="First"/>
+            <action class="com.github.homeant.yearning.action.PageAction$Previous" text="Previous"/>
+            <action class="com.github.homeant.yearning.action.PageAction$Next" text="Next"/>
+            <action class="com.github.homeant.yearning.action.PageAction$Last" text="Last"/>
+            <separator/>
+            <action class="com.github.homeant.yearning.action.PageAction$Reload" text="Reload"/>
+            <separator/>
+            <action class="com.github.homeant.yearning.action.NewWorkOrderAction" icon="AllIcons.General.Add" text="New Work Order"/>
+            <action class="com.github.homeant.yearning.action.RevertWorkOrderAction" text="Revert Work Order"/>
+        </group>
+
+        <!-- yearning tool end -->
+        
+    </actions>
+
+</idea-plugin>

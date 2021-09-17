@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drivers>
+    <driver id="Yearning-MySQL" name="Yearning MySQL" icon="com.github.homeant.yearning.Icons.LOGO" dialect="Yearning-MYSQL" driver-class="com.github.homeant.yearning.jdbc.YearningDriver">
+        <url-template name="URL" template="jdbc:yearning://{host::localhost}[:{port::443}][/{database}?][\?&lt;&amp;,source={source:param}&gt;]"/>
+        <artifact name="Yearning" use="true" rolling="true"/>
+        <option name="auto-commit" value="false"/>
+        <connection-bounds in-read-only="true" bound-to="schema">
+            <rewrite-parameter name="DBNAME"/>
+            <rewrite-parameter name="database" in-url="true"/>
+        </connection-bounds>
+    </driver>
+</drivers>

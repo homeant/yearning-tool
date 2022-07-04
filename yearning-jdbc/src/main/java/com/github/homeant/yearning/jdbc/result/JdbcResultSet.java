@@ -24,8 +24,11 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
     private boolean wasNull = false;
     private boolean wasLast = false;
 
+    private int fetchSize = 0;
+
     public JdbcResultSet(Statement statement, Cursor cursor) {
         this.cursor = cursor;
+        this.fetchSize = cursor.size();
         this.statement = statement;
     }
 
@@ -293,13 +296,13 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
 
     @Override
     public Reader getCharacterStream(int columnIndex) throws SQLException {
-        
+
         return null;
     }
 
     @Override
     public Reader getCharacterStream(String columnLabel) throws SQLException {
-        
+
         return null;
     }
 
@@ -319,50 +322,50 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
 
     @Override
     public boolean isBeforeFirst() throws SQLException {
-        
+
         return rowNumber == 0;
     }
 
     @Override
     public boolean isAfterLast() throws SQLException {
-        
+
         return rowNumber > 0 && wasLast;
     }
 
     @Override
     public boolean isFirst() throws SQLException {
-        
+
         return rowNumber == 1;
     }
 
     @Override
     public boolean isLast() throws SQLException {
-        
+
         throw new SQLFeatureNotSupportedException("isLast not supported");
     }
 
     @Override
     public void beforeFirst() throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
     @Override
     public void afterLast() throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
 
     }
 
     @Override
     public boolean first() throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
     @Override
     public boolean last() throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
@@ -373,19 +376,19 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
 
     @Override
     public boolean absolute(int row) throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
     @Override
     public boolean relative(int rows) throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
     @Override
     public boolean previous() throws SQLException {
-        
+
         throw new SQLException("ResultSet is forward-only");
     }
 
@@ -406,14 +409,15 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
         if (rows < 0) {
             throw new SQLException("Rows is negative");
         }
-        if (rows != getFetchSize()) {
-            throw new SQLException("Fetch size cannot be changed");
-        }
+//        if (rows != getFetchSize()) {
+//            throw new SQLException("Fetch size cannot be changed");
+//        }
+        this.fetchSize = rows;
     }
 
     @Override
     public int getFetchSize() throws SQLException {
-        return cursor.size();
+        return fetchSize;
     }
 
     @Override
@@ -668,7 +672,7 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
 
     @Override
     public Statement getStatement() throws SQLException {
-        
+
         return statement;
     }
 
@@ -1062,7 +1066,7 @@ public class JdbcResultSet implements ResultSet, JdbcWrapper {
         return value;
     }
 
-    public boolean hasRows(){
-        return cursor.size()>0;
+    public boolean hasRows() {
+        return cursor.size() > 0;
     }
 }
